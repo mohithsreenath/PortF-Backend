@@ -1,15 +1,14 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-import os
-import asyncio
+from app.core.config import DATABASE_URL
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+engine = create_async_engine(
+    DATABASE_URL,
+    echo=True
+)
 
-engine = create_async_engine(DATABASE_URL, echo=True)
-
-
-async def test():
-    async with engine.begin() as conn:
-        print("Database connected!")
-
-asyncio.run(test())
+AsyncSessionLocal = sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False
+)
