@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Integer, ForeignKey
+from sqlalchemy import String, Integer, ForeignKey, relationship
 from app.db.base import Base
 import uuid
 
@@ -14,7 +14,7 @@ class TechCategory(Base):
     )
 
     name: Mapped[str] = mapped_column(String(100), unique=True)
-
+    skills = relationship("Skill", back_populates="category")
 
 class Skill(Base):
 
@@ -32,3 +32,4 @@ class Skill(Base):
     category_id: Mapped[str] = mapped_column(
         ForeignKey("tech_categories.id")
     )
+    category = relationship("TechCategory", back_populates="skills")
