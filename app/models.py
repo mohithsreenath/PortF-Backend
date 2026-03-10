@@ -54,3 +54,13 @@ class ProjectSkill(Base):
 
     project = relationship("Project", back_populates="project_skills")
     skill = relationship("Skill", back_populates="project_links")
+
+
+class Admin(Base):
+    __tablename__ = "admins"
+
+    id: Mapped[str] = mapped_column(primary_key=True, default=lambda: str(uuid.uuid4()))
+    username: Mapped[str] = mapped_column(String(100), unique=True)
+    email: Mapped[str] = mapped_column(String(200), unique=True)
+    hashed_password: Mapped[str] = mapped_column(String(500))
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
