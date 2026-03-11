@@ -1,0 +1,20 @@
+name: Keep Render Alive
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Backend
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://portf-backend-flgu.onrender.com/)
+          echo "Response code: $response"
+          if [ "$response" -eq 200 ]; then
+            echo "✅ Backend is alive"
+          else
+            echo "⚠️ Backend returned $response"
+          fi
