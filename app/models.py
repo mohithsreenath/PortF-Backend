@@ -64,3 +64,41 @@ class Admin(Base):
     email: Mapped[str] = mapped_column(String(200), unique=True)
     hashed_password: Mapped[str] = mapped_column(String(500))
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class Experience(Base):
+    __tablename__ = "experiences"
+
+    id: Mapped[str] = mapped_column(primary_key=True, default=lambda: str(uuid.uuid4()))
+    company: Mapped[str] = mapped_column(String(200))
+    role: Mapped[str] = mapped_column(String(200))
+    location: Mapped[str] = mapped_column(String(200), nullable=True)
+    description: Mapped[str] = mapped_column(Text, nullable=True)
+    start_date: Mapped[str] = mapped_column(String(20))  # e.g. "Jan 2023"
+    end_date: Mapped[str] = mapped_column(String(20), nullable=True)  # None = "Present"
+    is_current: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class Blog(Base):
+    __tablename__ = "blogs"
+
+    id: Mapped[str] = mapped_column(primary_key=True, default=lambda: str(uuid.uuid4()))
+    title: Mapped[str] = mapped_column(String(300))
+    slug: Mapped[str] = mapped_column(String(300), unique=True, index=True)
+    content: Mapped[str] = mapped_column(Text)
+    summary: Mapped[str] = mapped_column(Text, nullable=True)
+    published: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), onupdate=func.now(), nullable=True)
+
+
+class ContactMessage(Base):
+    __tablename__ = "contact_messages"
+
+    id: Mapped[str] = mapped_column(primary_key=True, default=lambda: str(uuid.uuid4()))
+    name: Mapped[str] = mapped_column(String(200))
+    email: Mapped[str] = mapped_column(String(200))
+    message: Mapped[str] = mapped_column(Text)
+    is_read: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
