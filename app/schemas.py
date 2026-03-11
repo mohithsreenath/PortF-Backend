@@ -73,3 +73,26 @@ class ProjectResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# ─── Admin ────────────────────────────────────────────────────────
+class AdminRegister(BaseModel):
+    username: str
+    email: str
+    password: str
+
+class AdminLogin(BaseModel):
+    username: str
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class AdminResponse(BaseModel):
+    id: str
+    username: str
+    email: str
+
+    class Config:
+        from_attributes = True
