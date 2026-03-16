@@ -6,8 +6,20 @@ from app.endpoints.admin import router as admin_router
 from app.endpoints.blogs import router as blogs_router
 from app.endpoints.experience import router as experience_router
 from app.endpoints.contact import router as contact_router
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
     title="Portfolio Backend API"
+)
+
+#CORS
+app.add_middleware(
+    CORSMiddleware, allow_origins=["http://localhost:5173",        # local dev
+        "http://localhost:4173",        # local preview
+        "https://your-vercel-app.vercel.app",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 @app.get("/")
