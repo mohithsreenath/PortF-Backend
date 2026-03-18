@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import List
@@ -31,3 +31,17 @@ async def create_category(
     await db.commit()
     await db.refresh(category)
     return category
+
+
+@router.delete("/{category_id}", status_code=204)
+async def delete_category(
+    category_id: str,
+    db: AsyncSession = Depends(get_db),
+    _: Admin = Depends(get_current_admin)
+):
+    result = await db.execute(select(TechCategory).where(TechCategory.id == category_id))
+    cat = result.scalar_one_or_none()
+    if not cat:
+        raise HTTPException(status_code=404, detail="Category not found")
+    await db.delete(cat)
+    await db.commit()
